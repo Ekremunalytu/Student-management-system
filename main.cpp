@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <ios>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int main() {
     string Lessons[4] = {"Calculus" , "Structural Programming" , "Circuit Theory" , "Semiconductor Physics"};
 
    
-    for (int i = 0 ; i < 1 ; i++){
+    for (int i = 0 ; i < 3 ; i++){
         
         cout << "Enter student name: ";
         cin >> student[i].student_name;
@@ -68,18 +69,19 @@ void print_data(struct students student[] ,string  Lessons[4]){
     
 
     int col_width=30; // width 6 nin kati olmali, yoksa int oldugundan 3 ve 2'ye bolerken sikinti cikarir
-    cout << internal;
+    
 
     cout << "Printing student data" << endl;
-    cout << setw(col_width/2) << "Name" <<  setw(col_width) << "Number" << setw(col_width)  <<  Lessons[1] << setw(col_width) << Lessons[2] <<  setw(col_width) << Lessons[3] << setw(col_width) << Lessons[4] << endl;
+    left;
+    cout << setw(col_width/2) << "Name" <<  setw(col_width) << "Number" << setw(col_width)  <<  Lessons[0] << setw(col_width) << Lessons[1] <<  setw(col_width) << Lessons[2] << setw(col_width) << Lessons[3] << endl;
     cout <<"\n";
     
-    for (int i = 0 ; i  <  1 ; i++){
+    for (int i = 0 ; i  <  3 ; i++){
 
         cout << setw(col_width/2) << student[i].student_name  << setw(col_width) << student[i].student_number << setw(col_width/2) ;
 
         for(int j = 0 ; j < 4 ; j++){
-
+            left;
             cout << student[i].lessons[j].student_points.visa_1  ;
             cout << setw(col_width/3) << student[i].lessons[j].student_points.visa_2  ;
             cout << setw(col_width/3) << student[i].lessons[j].student_points.the_final  ;
