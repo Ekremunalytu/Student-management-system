@@ -28,8 +28,9 @@ int main() {
     int lesson_index = 0;
     int student_count;
 
-    cout << "student count" << endl;
+    cout << "Enter quantity of students: ";
     cin >> student_count;
+    
 
     students student[10];
 
