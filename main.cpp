@@ -21,18 +21,22 @@ struct students {
     subjects lessons[4];
 };
 
-void print_data(students student[] , string Lessons[4]);
+void print_data(students student[] , string Lessons[4] , int student_count);
 
 int main() {
 
     int lesson_index = 0;
+    int student_count;
+
+    cout << "student count" << endl;
+    cin >> student_count;
 
     students student[10];
 
     string Lessons[4] = {"Calculus" , "Structural Programming" , "Circuit Theory" , "Semiconductor Physics"};
 
    
-    for (int i = 0 ; i < 3 ; i++){
+    for (int i = 0 ; i < student_count ; i++){
         
         cout << "Enter student name: ";
         cin >> student[i].student_name;
@@ -60,35 +64,45 @@ int main() {
 
     }
 
-    print_data(student , Lessons);
+    print_data(student , Lessons , student_count);
 
     return 0;
 }
 
-void print_data(struct students student[] ,string  Lessons[4]){
-    
-
-    int col_width=30; // width 6 nin kati olmali, yoksa int oldugundan 3 ve 2'ye bolerken sikinti cikarir
-    
+void print_data(students student[], string Lessons[4], int student_count) {
+    int col_width = 12;
 
     cout << "Printing student data" << endl;
-    left;
-    cout << setw(col_width/2) << "Name" <<  setw(col_width) << "Number" << setw(col_width)  <<  Lessons[0] << setw(col_width) << Lessons[1] <<  setw(col_width) << Lessons[2] << setw(col_width) << Lessons[3] << endl;
-    cout <<"\n";
-    
-    for (int i = 0 ; i  <  3 ; i++){
+    cout << left << setw(col_width) << "Name"
+         << setw(col_width) << "Number";
 
-        cout << setw(col_width/2) << student[i].student_name  << setw(col_width) << student[i].student_number << setw(col_width/2) ;
+    for (int j = 0; j < 4; j++) {
+        cout << " | "
+             << setw(col_width * 3) << Lessons[j];
+    }
+    cout << endl;
 
-        for(int j = 0 ; j < 4 ; j++){
-            left;
-            cout << student[i].lessons[j].student_points.visa_1  ;
-            cout << setw(col_width/3) << student[i].lessons[j].student_points.visa_2  ;
-            cout << setw(col_width/3) << student[i].lessons[j].student_points.the_final  ;
-            cout << "  |  ";
+    cout << setw(col_width) << ""
+         << setw(col_width) << "";
 
+    for (int j = 0; j < 4; j++) {
+        cout << " | "
+             << setw(col_width) << "Visa 1"
+             << setw(col_width) << "Visa 2"
+             << setw(col_width) << "Final";
+    }
+    cout << endl;
+
+    for (int i = 0; i < student_count; i++) {
+        cout << setw(col_width) << student[i].student_name
+             << setw(col_width) << student[i].student_number;
+
+        for (int j = 0; j < 4; j++) {
+            cout << " | "
+                 << setw(col_width) << student[i].lessons[j].student_points.visa_1
+                 << setw(col_width) << student[i].lessons[j].student_points.visa_2
+                 << setw(col_width) << student[i].lessons[j].student_points.the_final;
         }
-        cout << "\n";
-        
+        cout << endl;
     }
 }
