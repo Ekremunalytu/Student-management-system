@@ -88,8 +88,8 @@ void get_point(students student[] , string Lessons[4] , int student_count){
 int check_data(int temp_point){
     
     while(!(temp_point>=0 && temp_point<=100)){
-        
-        cout << "Please enter a valid value";
+
+        cout << "Points can not be greater than 100 and less than 0\nPlease enter a new value: ";
         cin >> temp_point;
     }
     return temp_point;
