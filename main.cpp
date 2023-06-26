@@ -23,6 +23,7 @@ struct students {
     subjects lessons[4];
 };
 
+void get_point(students student[] , string Lessons[4] , int student_count);
 void print_data(students student[] , string Lessons[4] , int student_count);
 void grade_calculator(students student[] ,  int student_count);
 
@@ -31,18 +32,27 @@ int main() {
 
     int lesson_index = 0;
     int student_count;
+
     string flag;
 
     cout << "Enter quantity of students: ";
     cin >> student_count;
-    
 
     students student[10];
 
     string Lessons[4] = {"Calculus" , "Structural Programming" , "Circuit Theory" , "Semiconductor Physics"};
     string note_gap[9] = {"AA" , "BA" , "BB" , "CB" , "CC" , "DC" , "DD" , "FD" , "FF"};
 
-   
+    get_point(student , Lessons , student_count);
+    grade_calculator(student , student_count);
+    print_data(student , Lessons , student_count);
+    cout << "Press any key to exit" << endl;
+    cin >> flag;
+    return 0;
+}
+
+
+void get_point(students student[] , string Lessons[4] , int student_count){
     for (int i = 0 ; i < student_count ; i++){
         
         cout << "Enter student name: ";
@@ -66,15 +76,8 @@ int main() {
             cin >> student[i].lessons[j].student_points.the_final;
 
         }
-       
-        
-
     }
-    grade_calculator(student , student_count);
-    print_data(student , Lessons , student_count);
-    cout << "Press any key to exit" << endl;
-    cin >> flag;
-    return 0;
+
 }
 
 void print_data(students student[], string Lessons[4], int student_count) {
