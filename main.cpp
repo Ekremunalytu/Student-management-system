@@ -85,10 +85,12 @@ void print_data(students student[], string Lessons[4], int student_count) {
 
     for (int j = 0; j < 4; j++) {
         
-        cout << " | "
-             << setw(col_width * 3) << Lessons[j] << setw(col_width*2);
+        int padding = (32 - Lessons[j].length()) / 2;
+        string space(padding, ' ');
+        cout << " | " << space << Lessons[j] << space;
 
     }
+    cout << "|";
     cout << endl;
     cout << setw(col_width) << ""
          << setw(col_width) << "";
@@ -101,7 +103,6 @@ void print_data(students student[], string Lessons[4], int student_count) {
              << setw(col_width) << "Final"
              << setw(col_width) << "grade";
     }
-
     cout << endl;
 
     for (int i = 0; i < student_count; i++) {
@@ -115,6 +116,7 @@ void print_data(students student[], string Lessons[4], int student_count) {
                  << setw(col_width) << student[i].lessons[j].student_points.the_final
                  << setw(col_width) << student[i].lessons[j].student_points.grade;
         }
+       
         cout << endl;
     }
 
