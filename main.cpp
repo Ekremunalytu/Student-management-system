@@ -24,6 +24,7 @@ struct students {
 };
 
 void get_point(students student[] , string Lessons[4] , int student_count);
+int check_data(int temp_point);
 void print_data(students student[] , string Lessons[4] , int student_count);
 void grade_calculator(students student[] ,  int student_count);
 
@@ -53,6 +54,7 @@ int main() {
 
 
 void get_point(students student[] , string Lessons[4] , int student_count){
+    int temp_point;
     for (int i = 0 ; i < student_count ; i++){
         
         cout << "Enter student name: ";
@@ -67,18 +69,31 @@ void get_point(students student[] , string Lessons[4] , int student_count){
             cout << "Enter " << Lessons[j] << "  Exam  points\n" << endl;
 
             cout << "Fist visa:  ";
-            cin >> student[i].lessons[j].student_points.visa_1;
+            cin >> temp_point;
+            student[i].lessons[j].student_points.visa_1=check_data(temp_point);
         
             cout << "\nSecond visa:  ";
-            cin >> student[i].lessons[j].student_points.visa_2;
+            cin >> temp_point;
+            student[i].lessons[j].student_points.visa_2=check_data(temp_point);
 
             cout << "\nFinal:   ";
-            cin >> student[i].lessons[j].student_points.the_final;
+            cin >> temp_point;
+            student[i].lessons[j].student_points.the_final=check_data(temp_point);
 
         }
     }
 
 }
+
+int check_data(int temp_point){
+    
+    
+    while(!(temp_point>=0&&temp_point<=100)){
+        cout << "Please enter a valid value";
+        cin >> temp_point;
+    }
+    return temp_point;
+}    
 
 void print_data(students student[], string Lessons[4], int student_count) {
     int col_width = 8;
