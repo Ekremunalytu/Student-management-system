@@ -31,6 +31,7 @@ int main() {
 
     int lesson_index = 0;
     int student_count;
+    string flag;
 
     cout << "Enter quantity of students: ";
     cin >> student_count;
@@ -71,7 +72,8 @@ int main() {
     }
     grade_calculator(student , student_count);
     print_data(student , Lessons , student_count);
-
+    cout << "Press any key to exit" << endl;
+    cin >> flag;
     return 0;
 }
 
@@ -139,7 +141,6 @@ void grade_calculator(students student[] ,  int student_count){
         }
 
     }
-
 
 
 
