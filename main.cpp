@@ -28,8 +28,9 @@ int main() {
     int lesson_index = 0;
     int student_count;
 
-    cout << "student count" << endl;
+    cout << "Enter quantity of students: ";
     cin >> student_count;
+    
 
     students student[10];
 
@@ -105,5 +106,9 @@ void print_data(students student[], string Lessons[4], int student_count) {
         }
         cout << endl;
     }
+<<<<<<< HEAD
 }
 //deneme
+=======
+}
+>>>>>>> 3a4f78c811d8d4d17f43737b94d63e0fa83e54d3
