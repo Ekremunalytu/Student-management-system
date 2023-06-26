@@ -24,6 +24,7 @@ struct students {
 };
 
 void get_point(students student[] , string Lessons[4] , int student_count);
+void check_data(students student[] , int student_count);
 void print_data(students student[] , string Lessons[4] , int student_count);
 void grade_calculator(students student[] ,  int student_count);
 
@@ -44,10 +45,13 @@ int main() {
     string note_gap[9] = {"AA" , "BA" , "BB" , "CB" , "CC" , "DC" , "DD" , "FD" , "FF"};
 
     get_point(student , Lessons , student_count);
+    check_data(student , student_count);
     grade_calculator(student , student_count);
     print_data(student , Lessons , student_count);
+
     cout << "Press any key to exit" << endl;
     cin >> flag;
+
     return 0;
 }
 
@@ -68,6 +72,8 @@ void get_point(students student[] , string Lessons[4] , int student_count){
 
             cout << "Fist visa:  ";
             cin >> student[i].lessons[j].student_points.visa_1;
+
+           
         
             cout << "\nSecond visa:  ";
             cin >> student[i].lessons[j].student_points.visa_2;
@@ -75,6 +81,43 @@ void get_point(students student[] , string Lessons[4] , int student_count){
             cout << "\nFinal:   ";
             cin >> student[i].lessons[j].student_points.the_final;
 
+        }
+    }
+
+}
+
+void check_data(students student[] , int student_count){
+
+    for(int i = 0 ; i < student_count ; i++){
+
+        for (int j = 0 ; j < 4 ; j++){
+            
+            int x = 0, y = 0 , z = 0;
+
+            while (!(x&&y&&z)){
+                if (student[i].lessons[j].student_points.visa_1 <0 || student[i].lessons[j].student_points.visa_1 > 100 ){
+                    cout << "Please enter correct value for  first visa!" << endl;
+                    cin >> student[i].lessons[j].student_points.visa_1;
+                }
+                else {
+                    x = 1;
+                }
+                if (student[i].lessons[j].student_points.visa_2 <0 || student[i].lessons[j].student_points.visa_2 > 100 ){
+                    cout << "Please enter correct value for second visa!" << endl;
+                    cin >> student[i].lessons[j].student_points.visa_2;
+                }
+                else {
+                    y = 1;
+                }
+                if (student[i].lessons[j].student_points.the_final <0 || student[i].lessons[j].student_points.the_final > 100 ){
+                    cout << "Please enter correct value for final" << endl;
+                    cin >> student[i].lessons[j].student_points.the_final;
+                }
+                else {
+                    z = 1;
+                }
+
+            }
         }
     }
 
