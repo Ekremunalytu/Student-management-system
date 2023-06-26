@@ -106,3 +106,4 @@ void print_data(students student[], string Lessons[4], int student_count) {
         cout << endl;
     }
 }
+//deneme
