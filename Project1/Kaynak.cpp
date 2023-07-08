@@ -1,20 +1,24 @@
 ﻿#include <iostream>
 #include <string>
-
-
-
 #include "..\include_cpp\libxl.h"
 
 using namespace std;
 using namespace libxl;
+
+struct default_letter_grade_ranges {
+    int base;
+    double ceiling;
+    string letter_grade;
+};
 
 struct points {
     int visa_1;
     int visa_2;
     int the_final;
     double grade;
-
     string result;
+    string letter_grade;
+
 };
 
 struct subjects {
@@ -31,10 +35,12 @@ void get_point(students student[], string Lessons[4], int student_count);
 int check_data(int temp_point);
 void print_data(students student[], string Lessons[4], int student_count);
 void grade_calculator(students student[], int student_count);
+void calculateLetterGrade(students student[], int student_count);
+
 
 
 int main() {
-    
+
     int lesson_index = 0;
     int student_count;
 
@@ -46,10 +52,10 @@ int main() {
     students student[10];
 
     string Lessons[4] = { "Calculus" , "Structural Programming" , "Circuit Theory" , "Semiconductor Physics" };
-    string note_gap[9] = { "AA" , "BA" , "BB" , "CB" , "CC" , "DC" , "DD" , "FD" , "FF" };
 
     get_point(student, Lessons, student_count);
     grade_calculator(student, student_count);
+    calculateLetterGrade(student, student_count);
     print_data(student, Lessons, student_count);
     cout << "Press any key to exit" << endl;
     cin >> flag;
@@ -61,7 +67,7 @@ void get_point(students student[], string Lessons[4], int student_count) {
     int temp_point;
     for (int i = 0; i < student_count; i++) {
 
-        cout << "Enter student surname: ";
+        cout << "Enter student full name: ";
         cin.ignore();
         getline(cin, student[i].student_name);
 
@@ -113,58 +119,66 @@ void print_data(students student[], string Lessons[4], int student_count) {
 
         if (sheet)
         {
-         Font* font = book->addFont();
-         font->setBold(true);
+            Font* font = book->addFont();
+            font->setBold(true);
 
-           Format*defaultFormat = book->addFormat();
-           defaultFormat->setAlignH(ALIGNH_CENTER);
-           defaultFormat->setAlignV(ALIGNV_CENTER);
-           defaultFormat->setBorder(BORDERSTYLE_THIN);
-           defaultFormat->setBorderColor(COLOR_BLACK);
+            Format* defaultFormat = book->addFormat();
+            defaultFormat->setAlignH(ALIGNH_CENTER);
+            defaultFormat->setAlignV(ALIGNV_CENTER);
+            defaultFormat->setBorder(BORDERSTYLE_THIN);
+            defaultFormat->setBorderColor(COLOR_BLACK);
 
 
-           Format* lessonsFormat = book->addFormat();
-           lessonsFormat->setAlignH(ALIGNH_CENTER);
-           lessonsFormat->setAlignV(ALIGNV_CENTER);
-           lessonsFormat->setBorder(BORDERSTYLE_THIN);
-           lessonsFormat->setBorderColor(COLOR_BLACK);
-           lessonsFormat->setFont(font);
+            Format* lessonsFormat = book->addFormat();
+            lessonsFormat->setAlignH(ALIGNH_CENTER);
+            lessonsFormat->setAlignV(ALIGNV_CENTER);
+            lessonsFormat->setBorder(BORDERSTYLE_THIN);
+            lessonsFormat->setBorderColor(COLOR_BLACK);
+            lessonsFormat->setFont(font);
 
 
             sheet->setCol(1, sheet->lastCol(), 20);
             sheet->setCol(2, 2, 25);
-            sheet->writeStr(2, 2, L"Surname", lessonsFormat);
+            sheet->writeStr(2, 2, L"Name", lessonsFormat);
             sheet->writeStr(2, 3, L"Number", lessonsFormat);
-            sheet->writeStr(3, 3, L" ",defaultFormat);
-            sheet->writeStr(3, 2, L" ",defaultFormat);
+            sheet->writeStr(3, 3, L" ", defaultFormat);
+            sheet->writeStr(3, 2, L" ", defaultFormat);
 
-            for (int j = 1; j <= 4; j++) {
+            for (int j = 2; j <= 5; j++) {
 
-                std::wstring wLesson_name_formatted(Lessons[j - 1].begin(), Lessons[j - 1].end());
+                std::wstring wLesson_name_formatted(Lessons[j - 2].begin(), Lessons[j - 2].end());
                 const wchar_t* Lesson_name_formatted = wLesson_name_formatted.c_str();
 
-                sheet->writeStr(2, 4 * j, Lesson_name_formatted, lessonsFormat);
-                sheet->setMerge(2, 2, 4 * j, 4 * j + 3);
-                sheet->writeStr(3, 4 * j, L"Visa 1",defaultFormat);
-                sheet->writeStr(3, 4 * j + 1, L"Visa 2",defaultFormat);
-                sheet->writeStr(3, 4 * j + 2, L"Final",defaultFormat);
-                sheet->writeStr(3, 4 * j + 3, L"Grade",defaultFormat);
+                sheet->writeStr(2, 5 * j - 6, Lesson_name_formatted, lessonsFormat);
+                sheet->setMerge(2, 2, 5 * j - 6, 5 * j - 2);
+                sheet->writeStr(3, 5 * j - 6, L"Visa 1", defaultFormat);
+                sheet->writeStr(3, 5 * j - 5, L"Visa 2", defaultFormat);
+                sheet->writeStr(3, 5 * j - 4, L"Final", defaultFormat);
+                sheet->writeStr(3, 5 * j - 3, L"Grade", defaultFormat);
+                sheet->writeStr(3, 5 * j - 2, L"Letter", defaultFormat);
 
 
                 for (int i = 0; i < student_count; i++) {
 
-                    std::wstring wstudent_name_formatted(student[i].student_name.begin(), student[i].student_name.end());
+                    wstring wstudent_name_formatted(student[i].student_name.begin(), student[i].student_name.end());
                     const wchar_t* student_name_formatted = wstudent_name_formatted.c_str();
 
-                    sheet->writeStr(i + 4, 2, student_name_formatted,defaultFormat);
-                    sheet->writeNum(i + 4, 3, student[i].student_number,defaultFormat);
+                    sheet->writeStr(i + 4, 2, student_name_formatted, defaultFormat);
+                    sheet->writeNum(i + 4, 3, student[i].student_number, defaultFormat);
 
-                    for (int j = 1; j <= 4; j++) {
+                    for (int j = 2; j <= 5; j++) {
 
-                        sheet->writeNum(i + 4, 4 * j, student[i].lessons[j-1].student_points.visa_1,defaultFormat);
-                        sheet->writeNum(i + 4, 4 * j + 1, student[i].lessons[j-1].student_points.visa_2,defaultFormat);
-                        sheet->writeNum(i + 4, 4 * j + 2, student[i].lessons[j-1].student_points.the_final,defaultFormat);
-                        sheet->writeNum(i + 4, 4 * j + 3, student[i].lessons[j-1].student_points.grade,defaultFormat);
+                        sheet->writeNum(i + 4, 5 * j - 6, student[i].lessons[j - 2].student_points.visa_1, defaultFormat);
+                        sheet->writeNum(i + 4, 5 * j - 5, student[i].lessons[j - 2].student_points.visa_2, defaultFormat);
+                        sheet->writeNum(i + 4, 5 * j - 4, student[i].lessons[j - 2].student_points.the_final, defaultFormat);
+                        sheet->writeNum(i + 4, 5 * j - 3, student[i].lessons[j - 2].student_points.grade, defaultFormat);
+
+                        wstring wletter_grade_formatted(student[i].lessons[j - 2].student_points.letter_grade.begin(), student[i].lessons[j - 2].student_points.letter_grade.end());
+                        const wchar_t* letter_grade_formatted = wletter_grade_formatted.c_str();
+
+                        sheet->writeStr(i + 4, 5 * j - 2, letter_grade_formatted, defaultFormat);
+
+
                     }
 
                 }
@@ -196,8 +210,30 @@ void grade_calculator(students student[], int student_count) {
         }
 
     }
+}
+
+void calculateLetterGrade(students student[], int student_count) {
+    struct default_letter_grade_ranges ranges[9] = {
+        {74 , 100 , "AA"},
+        {67 , 73.9999 , "BA"},
+        {60 , 66.9999, "BB"},
+        {54, 59.9999, "CB"},
+        {53, 47.9999, "CC"},
+        {40, 46.9999, "DC"},
+        {33, 39.9999, "DD"},
+        {29, 32.9999, "FD"},
+        {0, 28.9999, "FF"}
+    };
 
 
-
-
+    for (int i = 0; i < student_count; i++) {
+        for (int j = 0; j < 4; j++) {
+            for (int k = 0; k < 9; k++) {
+                if (student[i].lessons[j].student_points.grade >= ranges[k].base && student[i].lessons[j].student_points.grade <= ranges[k].ceiling) {
+                    student[i].lessons[j].student_points.letter_grade = ranges[k].letter_grade;
+                    k = 9;
+                }
+            }
+        }
+    }
 }
