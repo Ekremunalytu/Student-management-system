@@ -5,8 +5,8 @@
 using namespace std;
 using namespace libxl;
 
-struct default_letter_grade_ranges {
-    int base;
+struct letter_grade_ranges {
+    double base;
     double ceiling;
     string letter_grade;
 };
@@ -35,13 +35,14 @@ void get_point(students student[], string Lessons[4], int student_count);
 int check_data(int temp_point);
 void print_data(students student[], string Lessons[4], int student_count);
 void grade_calculator(students student[], int student_count);
-void calculateLetterGrade(students student[], int student_count);
+void calculateLetterGrade(students student[], int student_count, int letter_grade_flag);
 
 
 
 int main() {
 
     int lesson_index = 0;
+    int letter_grade_flag;
     int student_count;
 
     string flag;
@@ -53,9 +54,19 @@ int main() {
 
     string Lessons[4] = { "Calculus" , "Structural Programming" , "Circuit Theory" , "Semiconductor Physics" };
 
+    cout << "Press 0 to use default letter grade ranges" << endl;
+    cout << "Press 1 to set letter grade ranges manually" << endl;
+    cin >> letter_grade_flag;
+
+    while (!(letter_grade_flag == 0 || letter_grade_flag == 1))
+    {
+        cout << "Invalid input, please try again" << endl;
+        cin >> letter_grade_flag;
+    }
+
     get_point(student, Lessons, student_count);
     grade_calculator(student, student_count);
-    calculateLetterGrade(student, student_count);
+    calculateLetterGrade(student, student_count, letter_grade_flag);
     print_data(student, Lessons, student_count);
     cout << "Press any key to exit" << endl;
     cin >> flag;
@@ -212,19 +223,64 @@ void grade_calculator(students student[], int student_count) {
     }
 }
 
-void calculateLetterGrade(students student[], int student_count) {
-    struct default_letter_grade_ranges ranges[9] = {
-        {74 , 100 , "AA"},
-        {67 , 73.9999 , "BA"},
-        {60 , 66.9999, "BB"},
-        {54, 59.9999, "CB"},
-        {53, 47.9999, "CC"},
-        {40, 46.9999, "DC"},
-        {33, 39.9999, "DD"},
-        {29, 32.9999, "FD"},
-        {0, 28.9999, "FF"}
-    };
+void calculateLetterGrade(students student[], int student_count, int letter_grade_flag) {
 
+    struct letter_grade_ranges ranges[9];
+    int control_flag;
+
+    if (letter_grade_flag == 0) {
+
+        ranges[0] = { 74, 100, "AA" };
+        ranges[1] = { 67, 73.9999, "BA" };
+        ranges[2] = { 60, 66.9999, "BB" };
+        ranges[3] = { 54, 59.9999, "CB" };
+        ranges[4] = { 53, 47.9999, "CC" };
+        ranges[5] = { 40, 46.9999, "DC" };
+        ranges[6] = { 33, 39.9999, "DD" };
+        ranges[7] = { 29, 32.9999, "FD" };
+        ranges[8] = { 0, 28.9999, "FF" };
+
+    }
+    else {
+        double user_ranges[8];
+
+        do {
+            control_flag = 1;
+            cout << "Please enter the base point for AA: ";
+            cin >> user_ranges[7];
+            cout << "Please enter the base point for BA: ";
+            cin >> user_ranges[6];
+            cout << "Please enter the base point for BB: ";
+            cin >> user_ranges[5];
+            cout << "Please enter the base point for CB: ";
+            cin >> user_ranges[4];
+            cout << "Please enter the base point for CC: ";
+            cin >> user_ranges[3];
+            cout << "Please enter the base point for DC: ";
+            cin >> user_ranges[2];
+            cout << "Please enter the base point for DD: ";
+            cin >> user_ranges[1];
+            cout << "Please enter the base point for FD: ";
+            cin >> user_ranges[0];
+
+            for (int i = 0; i < 7; i++) {
+                if (user_ranges[i] >= user_ranges[i + 1]) {
+                    control_flag = 0;
+                    cout << "Invalid ranges. Please make sure that each entered grade must be lower than the previous one." << endl;
+                }
+            }
+        } while (control_flag == 0);
+
+        ranges[0] = { user_ranges[7], 100, "AA" };
+        ranges[1] = { user_ranges[6], user_ranges[7] - 0.0001, "BA" };
+        ranges[2] = { user_ranges[5], user_ranges[6] - 0.0001, "BB" };
+        ranges[3] = { user_ranges[4], user_ranges[5] - 0.0001, "CB" };
+        ranges[4] = { user_ranges[3], user_ranges[4] - 0.0001, "CC" };
+        ranges[5] = { user_ranges[2], user_ranges[3] - 0.0001, "DC" };
+        ranges[6] = { user_ranges[1], user_ranges[2] - 0.0001, "DD" };
+        ranges[7] = { user_ranges[0], user_ranges[1] - 0.0001, "FD" };
+        ranges[8] = { 0, user_ranges[0] - 0.0001, "FF" };
+    }
 
     for (int i = 0; i < student_count; i++) {
         for (int j = 0; j < 4; j++) {
